@@ -10,7 +10,7 @@
           </button>
 
           <div class="duration-300 border-2 border-white bg-white text-secondary-color shadow-lg rounded-lg px-3 py-1.5">
-            {{ items.length }} items
+            {{ store.state.items.length }} items
           </div>
         </div>
 
@@ -36,7 +36,7 @@
       />
 
       <Table
-          :items="items"
+          :items="store.state.items"
           :payload="payload"
           :isForm="isForm"
           :id="payload.id"
@@ -73,33 +73,6 @@ const payload = ref({
   image_url: '',
 });
 const errors = ref({});
-const items = ref([
-    {
-      id: 1,
-      'title': 'shirt',
-      'price': 230,
-      'description': '21221fdd',
-      'image': '',
-      'image_url': '',
-    },
-    {
-      id: 2,
-      'title': 'jeans',
-      'price': 550,
-      'description': '21221fdd',
-      'image': '',
-      'image_url': '',
-    },
-    {
-      id: 3,
-      'title': 'short',
-      'price': 150,
-      'description': '21221fdd',
-      'image': '',
-      'image_url': '',
-    },
-]);
-
 const isForm = ref(null);
 const open = ref(false);
 const titleButton = ref('Add Item');
@@ -108,7 +81,7 @@ getItems();
 
 async function getItems() {
   // const response = await store.dispatch('getItems');
-  // items.value = response.data;
+  // store.state.items = response.data;
 }
 
 async function createItem() {
@@ -120,15 +93,15 @@ async function createItem() {
 
   try {
     // const response = await store.dispatch('create', data);
-    // items.value = [response.data, ...items.value];
+    // store.state.items = [response.data, ...store.state.items];
 
     // next line that I wrote it's because there isn't a server
-    items.value = [
+    store.state.items = [
       {
         ...payload.value,
-       id: items.value.length + 1
+       id: store.state.items.length + 1
       },
-      ...items.value
+      ...store.state.items
     ];
 
     isForm.value = !isForm.value ? 'Creating' : null;
@@ -148,12 +121,12 @@ async function updateItem() {
 
   try {
     // const response = await store.dispatch('updateItem', { id: payload.value.id, data});
-    // const index = items.value.findIndex(item => item.id === response.data.id);
-    // items.value[index] = response.data;
+    // const index = store.state.items.findIndex(item => item.id === response.data.id);
+    // store.state.items[index] = response.data;
 
     // next line that I wrote it's because there isn't a server
-    const index = items.value.findIndex(item => item.id === payload.value.id);
-    items.value[index] = payload.value;
+    const index = store.state.items.findIndex(item => item.id === payload.value.id);
+    store.state.items[index] = payload.value;
 
     payload.value = {
       id: null,
@@ -176,11 +149,11 @@ async function deleteItem() {
     // await store.dispatch('deleteCar', payload.value.id);
 
     // next line that I wrote it's because there isn't a server
-    const index = items.value.findIndex(item => item.id === payload.value.id);
-    items.value.splice(index, 1);
+    const index = store.state.items.findIndex(item => item.id === payload.value.id);
+    store.state.items.splice(index, 1);
   } catch (err) {
-    if (items.value.indexOf(payload.value)) {
-      items.value.splice(items.value.indexOf(payload.value), 1);
+    if (store.state.items.indexOf(payload.value)) {
+      store.state.items.splice(store.state.items.indexOf(payload.value), 1);
     }
   }
 }
@@ -202,26 +175,6 @@ function toggleForm() {
   }
 
   isForm.value = !isForm.value ? 'Creating' : null;
-
-  // if(open.value) {
-  //
-  //   titleButton.value = 'Add Item';
-  // } else {
-  //   titleButton.value = 'Cancel Item';
-  // }
-  //
-  // open.value = !open.value;
-}
-
-async function onSubmit() {
-  alert('Item successfully added');
-
-  titleButton.value = 'Add Item';
-  open.value = !open.value;
-
-  const response = await store.dispatch('getLastItem');
-
-  items.value.push(response.data);
 }
 
 </script>
