@@ -3,13 +3,9 @@
 @tailwind utilities;
 
 :root {
-  --primary-color: rgb(70, 70, 70);
-  --secondary-color: rgb(64, 84, 178);
+  --primary-color: rgb(255, 102, 178);
+  --secondary-color: rgb(70, 70, 70);
   --gray: rgb(245, 245, 245);
-}
-
-* {
-  direction: rtl;
 }
 
 html {

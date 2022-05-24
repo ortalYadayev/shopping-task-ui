@@ -2,31 +2,18 @@ import { createStore } from 'vuex'
 import axiosInstance from "../_helpers/axios";
 
 const store = createStore({
-    state: {
-        prevInstitution: localStorage.getItem('prevInstitution') || null,
-    },
+    state: {},
     getters: {},
-    mutations: {
-        setPrevInstitution(state, institution) {
-            state.prevInstitution = institution
-            localStorage.setItem('prevInstitution', institution)
-        },
-
-        removePrevInstitution(state) {
-            state.prevInstitution = null;
-            localStorage.removeItem('prevInstitution');
-        },
-    },
+    mutations: {},
     actions: {
-        async sign({commit}, payload) {
-            commit('setPrevInstitution', payload.institution);
-            return await axiosInstance.post('/sign', payload);
+        async create({commit}, payload) {
+            return await axiosInstance.post('/create', payload);
         },
-        async getStudents() {
-            return await axiosInstance.get('/students');
+        async getItems() {
+            return await axiosInstance.get('/items');
         },
-        async getLastStudent() {
-            return await axiosInstance.get('/get-student');
+        async getLasItem() {
+            return await axiosInstance.get('/get-item');
         },
     },
 })

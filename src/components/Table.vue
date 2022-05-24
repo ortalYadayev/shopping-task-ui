@@ -2,83 +2,40 @@
   <div class="full-size-table rounded-lg sm:shadow-lg overflow-scroll mt-10 mx-4 lg:mx-10">
     <table class="unresponsive-table w-full bg-white overflow-hidden shadow-lg text-center">
       <thead class="text-white">
-        <tr class="bg-secondary-color table-row rounded-l-lg sm:rounded-none">
+        <tr class="bg-primary-color table-row rounded-l-lg sm:rounded-none">
           <th class="p-3 sm:w-40">
-            מוסד
+            Title
           </th>
           <th class="p-3 sm:w-40">
-            תעודת זהות
+            Price
           </th>
           <th class="p-3 sm:w-40">
-            שם משפחה
+            Description
           </th>
           <th class="p-3 sm:w-40">
-            שם פרטי
-          </th>
-          <th class="p-3 sm:w-40">
-            ארץ לידה
-          </th>
-          <th class="p-3 sm:w-40">
-            תאריך לידה
-          </th>
-          <th class="p-3 sm:w-40">
-            תאריך עלייה
-          </th>
-          <th class="p-3 sm:w-40">
-            מין
-          </th>
-          <th class="p-3 sm:w-40">
-            לאום
-          </th>
-          <th class="p-3 sm:w-40">
-            טלפון בבית
-          </th>
-          <th class="p-3 sm:w-40">
-            טלפון נייד
-          </th>
-          <th class="p-3 sm:w-40">
-            אימייל
+            <O></O>ptions
           </th>
         </tr>
       </thead>
 
       <tbody class="flex-1 sm:flex-none">
-        <tr v-for="(student, index) in students" :key="index">
+        <tr v-for="(item, index) in items" :key="index">
           <td class="border-gray border-t border-l hover:bg-primary-color hover:text-gray p-3">
-            {{ student.institution }}
+            {{ item.title }}
           </td>
           <td class="border-gray border-t border-l hover:bg-primary-color hover:text-gray p-3">
-            {{ student.id_student }}
+            {{ item.price }}
           </td>
           <td class="border-gray border-t border-l hover:bg-primary-color hover:text-gray p-3">
-            {{ student.birthDate }}
+            {{ item.description }}
           </td>
-          <td class="border-gray border-t border-l hover:bg-primary-color hover:text-gray p-3">
-            {{ student.lastName }}
-          </td>
-          <td class="border-gray border-t border-l hover:bg-primary-color hover:text-gray p-3">
-            {{ student.birthCountry }}
-          </td>
-          <td class="border-gray border-t border-l hover:bg-primary-color hover:text-gray p-3">
-            {{ student.firstName }}
-          </td>
-          <td class="border-gray border-t border-l hover:bg-primary-color hover:text-gray p-3">
-            {{ student.immigration }}
-          </td>
-          <td class="border-gray border-t border-l hover:bg-primary-color hover:text-gray p-3">
-            {{ student.gender }}
-          </td>
-          <td class="border-gray border-t border-l hover:bg-primary-color hover:text-gray p-3">
-            {{ student.nation }}
-          </td>
-          <td class="border-gray border-t border-l hover:bg-primary-color hover:text-gray p-3">
-            {{ student.homePhone }}
-          </td>
-          <td class="border-gray border-t border-l hover:bg-primary-color hover:text-gray p-3">
-            {{ student.mobilePhone }}
-          </td>
-          <td class="border-gray border-t border-l hover:bg-primary-color hover:text-gray p-3">
-            {{ student.email }}
+          <td class="flex justify-center items-center border-gray border-t border-l hover:bg-gray p-3">
+            <button class="flex justify-center items-center bg-gray text-blue-500 hover:bg-blue-500 hover:text-gray duration-200 w-8 h-8 inline rounded-full mx-1">
+              <BIconGear class="text-lg" />
+            </button>
+            <button class="flex justify-center items-center duration-200 w-8 h-8 inline rounded-full bg-gray text-red-500 hover:bg-red-500 hover:text-white mx-1">
+              <BIconTrash class="text-lg" />
+            </button>
           </td>
         </tr>
       </tbody>
@@ -87,27 +44,12 @@
 </template>
 
 <script setup>
-// import { ref } from "vue";
-import { useStore } from 'vuex';
-
-// const store = useStore();
-// const students = ref([]);
-
-// setTimeout(() =>
-//     getStudents()
-        // , 0);
-
-// async function getStudents() {
-//   const response = await store.dispatch('getStudents');
-//   students.value = response.data;
-// }
 const props = defineProps({
-  students: {
+  items: {
     required: false,
     type: [Array, null],
   }
 });
-// console.log(students)
 </script>
 
 <style lang="scss" scoped>

@@ -13,6 +13,8 @@
         "@vuelidate/core": "^2.0.0-alpha.41",
         "@vuelidate/validators": "^2.0.0-alpha.29",
         "axios": "^0.26.1",
+        "bootstrap-icons-vue": "^1.8.1",
+        "compressorjs": "^1.1.1",
         "vue": "^3.2.16",
         "vue-router": "^4.0.11",
         "vuex": "^4.0.2"
