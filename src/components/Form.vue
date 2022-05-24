@@ -3,69 +3,68 @@
     <form
         class="w-full sm:w-1/2 lg:w-1/3 rounded-xl shadow-md bg-white py-6 sm:py-8 px-5 lg:px-12"
         @submit.prevent="onSubmit"
-        method="post"
     >
       <h1 class="text-center text-secondary-color text-2xl sm:text-4xl lg:text-5xl mb-6">
-       New Item
+       Item
       </h1>
 
       <div class="flex flex-col mb-2">
         <input
-            v-model="payload.title"
-            @keydown="resetErrors('title', 'message')"
+            @input="$emit('update:title', $event.target.value); resetErrors('title')"
             name="title"
-            placeholder="Title"
+            :placeholder="title ? title : 'Title'"
             type="text"
+            :value="title ? title : ''"
             class="duration-150 border-2 text-secondary-color rounded-md px-3 py-1.5 mb-2"
-            :class="errors.title || v$.title.$error ? 'border-red-400' : 'border-secondary-color hover:border-primary-color focus:border-primary-color'"
+            :class=" v$.title.$error ? 'border-red-400' : 'border-secondary-color hover:border-primary-color focus:border-primary-color'"
         >
         <transition name="slide-fade">
           <span
-              v-if="errors.title || v$.title.$error "
+              v-if="v$.title.$error "
               class="italic text-xs text-red-500"
           >
-            {{ errors.title || v$.title.$errors[0].$message }}
+            {{ v$.title.$errors[0].$message }}
           </span>
         </transition>
       </div>
 
       <div class="flex flex-col mb-2">
         <input
-            v-model="payload.price"
-            @keydown="resetErrors('price', 'message')"
+            @input="$emit('update:price', $event.target.value); resetErrors('price')"
             name="price"
-            placeholder="Price"
+            :placeholder="price ? price : 'Price'"
+            :value="price ? price : ''"
             type="number"
             min="0"
             class="duration-150 border-2 text-secondary-color rounded-md px-3 py-1.5 mb-2"
-            :class="errors.price || v$.price.$error ? 'border-red-400' : 'border-secondary-color hover:border-primary-color focus:border-primary-color'"
+            :class="v$.price.$error ? 'border-red-400' : 'border-secondary-color hover:border-primary-color focus:border-primary-color'"
         >
         <transition name="slide-fade">
           <span
-              v-if="errors.price || v$.price.$error "
+              v-if="v$.price.$error "
               class="italic text-xs text-red-500"
           >
-            {{ errors.price || v$.price.$errors[0].$message }}
+            {{ v$.price.$errors[0].$message }}
           </span>
         </transition>
       </div>
 
       <div class="flex flex-col mb-2">
         <input
-            v-model="payload.description"
-            @keydown="resetErrors('description', 'message')"
+            @input="$emit('update:description', $event.target.value); resetErrors('description')"
             name="description"
-            placeholder="Description"
+            :placeholder="description ? description : 'Description'"
+            :value="description ? description : ''"
             type="text"
             class="duration-150 border-2 text-secondary-color rounded-md px-3 py-1.5 mb-2"
-            :class="errors.description || v$.description.$error ? 'border-red-400' : 'border-secondary-color hover:border-primary-color focus:border-primary-color'"
+            :class="v$.description.$error ? 'border-red-400' : 'border-secondary-color hover:border-primary-color focus:border-primary-color'"
         >
         <transition name="slide-fade">
           <span
-              v-if="errors.description || v$.description.$error"
+              v-if="v$.description.$error"
               class="italic text-xs text-red-500"
           >
-            {{ errors.description || v$.description.$errors[0].$message }}
+            {{v$.description.$errors[0].$message }}
           </span>
         </transition>
       </div>
@@ -75,22 +74,22 @@
             class="duration-200 text-center text-secondary-color text-lg tracking-wide font-bold cursor-pointer rounded-xl bg-gray hover:text-gray hover:bg-primary-color py-2 px-4"
             for="image"
         >
-          בחר תמונה
+         choose image
         </label>
         <input
             id="image"
             type="file"
             accept="image/png, image/jpeg"
             class="hidden"
-            @keydown="resetErrors('image', 'message')"
-            @change="handleImageUrl"
+            @input="$emit('update:image', $event.target.value)"
+            @change="handleImageUrl(item)"
         >
         <transition name="slide-fade">
           <span
-              v-if="errors.image || v$.image.$error"
+              v-if="v$.image.$error"
               class="italic text-xs text-red-500 mt-2"
           >
-            {{ errors.image || v$.image.$errors[0].$message }}
+            {{ v$.image.$errors[0].$message }}
           </span>
         </transition>
       </div>
@@ -110,7 +109,7 @@
             type="submit"
             value="Submit"
         >
-          הרשם
+           send
         </button>
       </div>
     </form>
@@ -118,27 +117,53 @@
 </template>
 
 <script setup>
-import { useStore } from 'vuex';
-import { reactive, ref } from 'vue';
 import useVuelidate from '@vuelidate/core'
 import { required, minLength, maxLength, helpers } from '@vuelidate/validators'
 import Compressor from "compressorjs";
 
-const store = useStore();
-const payload = reactive({
-  title: '',
-  price: '',
-  description: '',
-  image: null,
-  image_url: null,
+const props = defineProps({
+  id: {
+    required: true,
+    type: [Number, null],
+  },
+  title: {
+    required: true,
+    type: [String, null],
+  },
+  price: {
+    required: true,
+    type: [String, null],
+  },
+  description: {
+    required: true,
+    type: [String, null],
+  },
+  image: {
+    required: true,
+  },
+  image_url: {
+    required: false,
+    type: [String, null],
+  },
+  isForm: {
+    required: false,
+    type: [String, null],
+  },
+  errors: {
+    required: true,
+  },
 });
-let emit = defineEmits(['onSubmit']);
-let errors = ref({
-  title: '',
-  price: '',
-  description: '',
-  image: '',
-});
+
+let emits = defineEmits([
+  'onSubmit',
+  'update:id',
+  'update:title',
+  'update:price',
+  'update:description',
+  'update:image',
+  'update:image_url',
+]);
+
 const rules = {
   title: {
     required: helpers.withMessage('Required field!', required),
@@ -157,37 +182,19 @@ const rules = {
     required: helpers.withMessage('Image is missing', required),
   },
 };
-const v$ = useVuelidate(rules, payload);
+const v$ = useVuelidate(rules, props);
 
 async function onSubmit() {
-  v$.value.$touch();
+  if(props.isForm !== 'Updating') {
+    v$.value.$touch();
 
-  if (v$.value.$invalid) {
-    return;
-  }
-
-  const data = new FormData();
-  data.append('title', payload.title);
-  data.append('price', payload.price);
-  data.append('description', payload.description);
-  data.append('image', payload.image);
-
-  try {
-    await store.dispatch('create', data);
-
-    emit('onSubmit');
-  } catch (error) {
-    if (error.response.status === 400) {
-      error.response.data.errors.map(error => {
-        if(!errors.value[error.param]){
-          errors.value[error.param] = error.msg;
-        }
-      })
-    }
-    if (error.response.status === 422) {
-      errors.value.message = error.response.data.message;
+    if (v$.value.$invalid) {
+      return;
     }
   }
+
+  emits('update:id', props.id);
+  emits('onSubmit');
 }
 
 async function handleImageUrl(event) {
@@ -197,9 +204,8 @@ async function handleImageUrl(event) {
       width: 800,
       height: 800,
       success(file) {
-        payload.image_url = URL.createObjectURL(file);
-        payload.image = file;
-        console.log(payload)
+        emits('update:image_url', URL.createObjectURL(file));
+        emits('update:image', file);
         resolve();
       },
       error: reject,
@@ -209,8 +215,7 @@ async function handleImageUrl(event) {
 
 function resetErrors(key, message) {
   v$.value[key].$reset();
-  delete errors.value[key];
-  delete errors.value[message];
+  delete props.errors[message];
 }
 </script>
 
