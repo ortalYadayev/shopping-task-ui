@@ -3,7 +3,7 @@
 ## Install
 
 ```
-git clone git@github.com:ortalYadayev/task-ui.git
+git clone git@github.com:ortalYadayev/task-shopping-ui.git
 cd ui
 npm install
 ```
