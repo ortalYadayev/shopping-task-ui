@@ -71,7 +71,7 @@ let emits = defineEmits([
   'update:description',
   'update:image',
   'update:image_url',
-  'deleteCar',
+  'deleteItem',
 ]);
 
 function openUpdateForm(item) {
@@ -89,6 +89,20 @@ function openUpdateForm(item) {
   emits('update:isForm', 'Updating');
 }
 
+function deleteItem(item) {
+  if (!window.confirm(`Are you sure to delete the ${item.title}?`)) {
+    return;
+  }
+
+  emits('update:id', item.id);
+  emits('update:title', item.title);
+  emits('update:price', item.price);
+  emits('update:description', item.description);
+  emits('update:image', item.image);
+  emits('update:image_url', item.image_url);
+
+  emits('deleteItem');
+}
 </script>
 
 <style lang="scss" scoped>

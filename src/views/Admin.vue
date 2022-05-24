@@ -52,6 +52,7 @@
           @update:image="image => payload.image = image"
           @update:image_url="image_url => payload.image_url = image_url"
           @update:isForm="isFormValue => isForm = isFormValue"
+          @deleteItem="deleteItem(item)"
       />
     </div>
 </template>
@@ -169,22 +170,17 @@ async function updateItem() {
   }
 }
 
-async function deleteCar(item) {
-  if (!window.confirm(`Are you sure to delete the ${item.title}?`)) {
-    return;
-  }
-
-  if (payload.value.id === item.id){
-    isForm.value = isForm.value === 'Updating' ? null : isForm;
-  }
-
+async function deleteItem() {
+  console.log(payload.value)
   try {
-    await store.dispatch('deleteCar', item.id);
+    // await store.dispatch('deleteCar', payload.value.id);
 
-    items.value.splice(items.value.indexOf(item), 1);
+    // next line that I wrote it's because there isn't a server
+    const index = items.value.findIndex(item => item.id === payload.value.id);
+    items.value.splice(index, 1);
   } catch (err) {
-    if (items.value.indexOf(item)) {
-      items.value.splice(items.value.indexOf(item), 1);
+    if (items.value.indexOf(payload.value)) {
+      items.value.splice(items.value.indexOf(payload.value), 1);
     }
   }
 }
