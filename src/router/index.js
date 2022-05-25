@@ -12,6 +12,11 @@ const routes = [
         name: 'Admin',
         component: () => import('../views/Admin.vue'),
     },
+    {
+        path: '/stats',
+        name: 'Stats',
+        component: () => import('../views/Stats1.vue'),
+    },
 ]
 const router = createRouter({
     history: createWebHistory(),
