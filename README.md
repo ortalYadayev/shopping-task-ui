@@ -1,4 +1,4 @@
-# UI
+# Shopping Task - UI
 
 ## Install
 
